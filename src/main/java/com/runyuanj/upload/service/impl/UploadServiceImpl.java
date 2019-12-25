@@ -47,7 +47,7 @@ public class UploadServiceImpl implements UploadService {
         String fileCatalog = new StringBuffer(Constants.serverRootPath).append(fileType).append(File.separator).append(midPath).toString();
         String tmpCatalog = new StringBuffer(Constants.serverTempPath).append(fileType).append(File.separator).append(midPath).toString();
 
-        String url = new StringBuffer(Constants.domain).append(midPath).append(fileName).toString();
+        String url = new StringBuffer(Constants.domain).append(fileType).append(File.separator).append(midPath).append(fileName).toString();
 
         // 实现分片上传
         boolean result = uploadStream2AbsolutePath(multipartFile, fileName, tmpCatalog, fileCatalog);
