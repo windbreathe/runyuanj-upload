@@ -17,9 +17,20 @@ import java.util.*;
 @Service
 public class UploadServiceImpl implements UploadService {
 
+    /**
+     * 查询服务器中是否有该文件, 如果有且已上传完成, 返回地址, 若未上传完成, 返回上传到第几片. 没有返回空
+     *
+     * @param md5
+     * @return
+     */
+    @Override
+    public String checkFileMd5(String md5) {
+        return null;
+    }
+
     @Override
     public List<String> uploadFile(MultipartFile[] files) throws Exception {
-        if (files == null && files.length == 0) {
+        if (files == null && files.length <= 0) {
             throw new Exception("File is Null");
         }
 
@@ -58,30 +69,18 @@ public class UploadServiceImpl implements UploadService {
         }
     }
 
-    // 实现断点续传功能
     private boolean uploadStream2AbsolutePath(MultipartFile multipartFile,
                                               String fileName,
                                               String tmpCatalog,
                                               String fileCatalog) throws Exception {
-        File tmpPath = new File(tmpCatalog);
-        if (!tmpPath.exists()) {
-            boolean mkdirs = tmpPath.mkdirs();
-            if (!mkdirs) {
-                throw new Exception(tmpCatalog + " mkdirs failed");
-            }
-        }
 
-        File targetPath = new File(fileCatalog);
-        if (!targetPath.exists()) {
-            boolean mkdirs = targetPath.mkdirs();
-            if (!mkdirs) {
-                throw new Exception(fileCatalog + " mkdirs failed");
-            }
-        }
+        File tmpPath = FileUploadUtil.createAndCheckFilePath(tmpCatalog);
+        File targetPath = FileUploadUtil.createAndCheckFilePath(fileCatalog);
 
         File tmpFile = new File(tmpPath, fileName);
         File targetFile = new File(targetPath, fileName);
-        boolean result = uploadStream2TmpPath(multipartFile, tmpFile);
+
+        boolean result = FileUploadUtil.uploadStream2TmpPath(multipartFile, tmpFile);
 
         if (result) {
             FileCopyUtils.copy(tmpFile, targetFile);
@@ -91,38 +90,6 @@ public class UploadServiceImpl implements UploadService {
         return false;
     }
 
-    private boolean uploadStream2TmpPath(MultipartFile multipartFile, File tmpFile) throws IOException {
-        boolean result = false;
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = multipartFile.getInputStream();
-            out = new FileOutputStream(tmpFile);
-            byte[] bytes = new byte[1024];
-            int len = -1;
-            while ((len = in.read(bytes)) != -1) {
-                out.write(bytes, 0, len);
-            }
-            result = true;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    ;
-                }
-            }
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    ;
-                }
-            }
-        }
-        return result;
-    }
+
 
 }

@@ -12,4 +12,11 @@ public interface UploadService {
 
    List<String> uploadFile(MultipartFile[] files) throws Exception;
 
+    /**
+     * 查询服务器中是否有该文件, 如果有且已上传完成, 返回地址, 若未上传完成, 返回上传到第几片. 没有返回空
+     *
+     * @param md5
+     * @return
+     */
+    String checkFileMd5(String md5);
 }
