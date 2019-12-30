@@ -13,40 +13,6 @@ import java.util.TimeZone;
  */
 public class FileUploadUtil {
 
-    public static boolean uploadStream2TmpPath(MultipartFile multipartFile, File tmpFile) throws IOException {
-        boolean result = false;
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = multipartFile.getInputStream();
-            out = new FileOutputStream(tmpFile);
-            byte[] bytes = new byte[1024];
-            int len = -1;
-            while ((len = in.read(bytes)) != -1) {
-                out.write(bytes, 0, len);
-            }
-            result = true;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    ;
-                }
-            }
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    ;
-                }
-            }
-        }
-        return result;
-    }
-
     /**
      * 从字典中匹配数据类型
      *
@@ -136,50 +102,6 @@ public class FileUploadUtil {
         return filePath;
     }
 
-    public static String bytesToHexString(byte[] bytes) {
-        StringBuffer sb = new StringBuffer();
-        if (bytes == null || bytes.length <= 0) {
-            return null;
-        }
-        String str;
-        for (int i = 0; i < bytes.length; i++) {
-
-            str = Integer.toHexString(bytes[i] & 0xFF).toUpperCase();
-            if (str.length() < 2) {
-                sb.append(0);
-            }
-
-            sb.append(str);
-        }
-
-        return sb.toString();
-    }
-
-
-    /**
-     * convert HexString to byte[]
-     *
-     * @param str
-     * @return
-     */
-    public static byte[] hexStringToBytes(String str) {
-        if (str == null) {
-            return null;
-        }
-        if (str.length() == 0) {
-            return new byte[0];
-        }
-        byte[] byteArray = new byte[str.length() / 2];
-
-        for (int i = 0; i < byteArray.length; i++) {
-
-            String subStr = str.substring(2 * i, 2 * i + 2);
-
-            byteArray[i] = ((byte) Integer.parseInt(subStr, 16));
-        }
-        return byteArray;
-    }
-
     public static void main(String[] args) {
         // 验证fileType
         /* String type = "jpg";
@@ -198,6 +120,5 @@ public class FileUploadUtil {
         }*/
 
     }
-
 
 }
