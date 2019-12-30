@@ -1,9 +1,12 @@
 package com.runyuanj.upload.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -100,6 +103,54 @@ public class FileUploadUtil {
             }
         }
         return filePath;
+    }
+
+
+    /**
+     * 通过url获取文件md5, 先下载下来再计算
+     *
+     * @param fileUrl
+     * @return
+     */
+    public static String getFileMd5(String fileUrl, Integer connTimeOut, Integer readTimeOut) throws IOException {
+
+        if (org.springframework.util.StringUtils.isEmpty(fileUrl)) {
+            return null;
+        }
+
+        URL url = new URL(fileUrl);
+
+        HttpURLConnection conn = null;
+        InputStream in = null;
+        try {
+
+            conn = (HttpURLConnection) url.openConnection();
+
+            conn.setConnectTimeout(connTimeOut);
+            conn.setReadTimeout(readTimeOut);
+            conn.connect();
+
+            in = conn.getInputStream();
+
+            return DigestUtils.md5DigestAsHex(in);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception e) {
+
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.disconnect();
+                } catch (Exception e) {
+
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {

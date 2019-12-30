@@ -39,54 +39,6 @@ public class UploadServiceImpl implements UploadService {
         return null;
     }
 
-    /**
-     * 通过url获取文件md5, 先下载下来再计算
-     *
-     * @param fileUrl
-     * @return
-     */
-    public String getFileMd5(String fileUrl, Integer connTimeOut, Integer readTimeOut) throws IOException {
-
-        if (StringUtils.isEmpty(fileUrl)) {
-            return null;
-        }
-
-        URL url = new URL(fileUrl);
-
-        HttpURLConnection conn = null;
-        InputStream in = null;
-        try {
-
-            conn = (HttpURLConnection) url.openConnection();
-
-            conn.setConnectTimeout(connTimeOut);
-            conn.setReadTimeout(readTimeOut);
-            conn.connect();
-
-            in = conn.getInputStream();
-
-            return DigestUtils.md5DigestAsHex(in);
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (Exception e) {
-
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.disconnect();
-                } catch (Exception e) {
-
-                }
-            }
-        }
-    }
-
-
     @Override
     public List<String> uploadFile(MultipartFile[] files) throws Exception {
         if (files == null && files.length <= 0) {
@@ -138,8 +90,6 @@ public class UploadServiceImpl implements UploadService {
 
         File tmpFile = new File(tmpPath, fileName);
         File targetFile = new File(targetPath, fileName);
-
-        //boolean result = FileUploadUtil.uploadStream2TmpPath(multipartFile, tmpFile);
 
         FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), tmpFile);
         FileUtils.copyFile(tmpFile, targetFile);
