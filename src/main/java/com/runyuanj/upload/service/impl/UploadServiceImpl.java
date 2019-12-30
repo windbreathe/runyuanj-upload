@@ -139,24 +139,11 @@ public class UploadServiceImpl implements UploadService {
         File tmpFile = new File(tmpPath, fileName);
         File targetFile = new File(targetPath, fileName);
 
-        boolean result = FileUploadUtil.uploadStream2TmpPath(multipartFile, tmpFile);
+        //boolean result = FileUploadUtil.uploadStream2TmpPath(multipartFile, tmpFile);
 
-        if (result) {
-            FileCopyUtils.copy(tmpFile, targetFile);
-            tmpFile.delete();
-            return true;
-        }
-        return false;
+        FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), tmpFile);
+        FileUtils.copyFile(tmpFile, targetFile);
+        return true;
     }
-
-    boolean uploadFileToServer(MultipartFile multipartFile, File file) throws Exception {
-
-        FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);
-
-
-        return false;
-
-    }
-
 
 }
