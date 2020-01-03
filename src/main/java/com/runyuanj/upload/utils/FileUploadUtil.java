@@ -1,20 +1,19 @@
 package com.runyuanj.upload.utils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.DigestUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.UUID;
 
 /**
  * @author: runyu
  * @date: 2019/12/25 8:40
  */
 public class FileUploadUtil {
+
+    private FileUploadUtil() {}
 
     /**
      * 从字典中匹配数据类型
@@ -105,13 +104,12 @@ public class FileUploadUtil {
         return filePath;
     }
 
-
     /**
-     * 通过url获取文件md5, 先下载下来再计算
+     * 通过url获取文件md5, 先下载下来再计算, 毫无作用
      *
-     * @param fileUrl
+     * @param
      * @return
-     */
+     *//*
     public static String getFileMd5(String fileUrl, Integer connTimeOut, Integer readTimeOut) throws IOException {
 
         if (org.springframework.util.StringUtils.isEmpty(fileUrl)) {
@@ -151,8 +149,7 @@ public class FileUploadUtil {
                 }
             }
         }
-    }
-
+    }*/
     public static void main(String[] args) {
         // 验证fileType
         /* String type = "jpg";

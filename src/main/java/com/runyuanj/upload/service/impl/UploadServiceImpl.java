@@ -5,17 +5,25 @@ import com.runyuanj.upload.utils.Constants;
 import com.runyuanj.upload.utils.FileUploadUtil;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.ws.transport.http.HttpUrlConnection;
+import sun.net.www.protocol.https.HttpsURLConnectionImpl;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -93,6 +101,7 @@ public class UploadServiceImpl implements UploadService {
 
         FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), tmpFile);
         FileUtils.copyFile(tmpFile, targetFile);
+        FileUtils.deleteQuietly(tmpFile);
         return true;
     }
 

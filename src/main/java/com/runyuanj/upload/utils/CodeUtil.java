@@ -7,7 +7,7 @@ package com.runyuanj.upload.utils;
 public class CodeUtil {
 
     /**
-     * byte[]转HexString
+     * byte[]转十六进制字符串
      *
      * @param bytes
      * @return

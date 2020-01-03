@@ -31,11 +31,11 @@ public class B extends A {
         //B b = new B("b");
         //System.out.println(B.b);
         //
-        //System.out.println(B.b);
-        //System.out.println(B.a);
+        System.out.println(B.b);
+        System.out.println(B.a);
         B b = new B("b");
         System.out.println(B.b);
-        System.out.println(A.a);
+        System.out.println(B.a);
         //System.out.println(B.a);
     }
 
