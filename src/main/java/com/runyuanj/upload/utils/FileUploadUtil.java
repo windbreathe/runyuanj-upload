@@ -91,9 +91,6 @@ public class FileUploadUtil {
         if (StringUtils.isBlank(catalog)) {
             throw new Exception("catalog can not be null");
         }
-        if (!StringUtils.endsWith(catalog, "/")) {
-            throw new Exception("catalog must endsWith '/'");
-        }
         File filePath = new File(catalog);
         if (!filePath.exists()) {
             boolean mkdirs = filePath.mkdirs();
