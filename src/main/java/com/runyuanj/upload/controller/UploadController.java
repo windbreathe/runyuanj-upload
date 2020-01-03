@@ -63,6 +63,15 @@ public class UploadController {
         }
     }
 
+    /**
+     * 下载文件
+     *
+     * @param url
+     * @param fileType
+     * @param readTimeout
+     * @param connTimeout
+     * @return
+     */
     @GetMapping("/download")
     public ServiceResponse downloadFile(@RequestParam("url") String url,
                                         @RequestParam("fileType") String fileType,
